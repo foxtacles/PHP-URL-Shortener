@@ -9,7 +9,13 @@ ini_set('display_errors', 0);
 
 $url_to_shorten = get_magic_quotes_gpc() ? stripslashes(trim($_REQUEST['url'])) : trim($_REQUEST['url']);
 
-if(!empty($url_to_shorten) && preg_match('|^https?://|', $url_to_shorten))
+if (empty($url_to_shorten))
+{
+	echo '<body style="background-size:100% 100%;background-image:url(fuchsi.png);"></body>';
+	exit;	
+}
+
+if(preg_match('|^https?://|', $url_to_shorten))
 {
 	require('config.php');
 
@@ -49,6 +55,12 @@ if(!empty($url_to_shorten) && preg_match('|^https?://|', $url_to_shorten))
 		mysql_query('UNLOCK TABLES');
 	}
 	echo BASE_HREF . $shortened_url;
+}
+else
+{
+        echo "Bad request";
+        header('HTTP/1.1 422 Bad request');
+        exit;
 }
 
 function getShortenedURLFromID ($integer, $base = ALLOWED_CHARS)
