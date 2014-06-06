@@ -18,7 +18,7 @@ $shortened_id = getIDFromShortenedURL($_GET['url']);
 
 if(CACHE)
 {
-	$long_url = file_get_contents(CACHE_DIR . $shortened_id);
+	$long_url = @file_get_contents(CACHE_DIR . $shortened_id);
 	if(empty($long_url) || !preg_match('|^https?://|', $long_url))
 	{
 		$long_url = mysql_result(mysql_query('SELECT long_url FROM ' . DB_TABLE . ' WHERE id="' . mysql_real_escape_string($shortened_id) . '"'), 0, 0);
